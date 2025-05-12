@@ -14,4 +14,4 @@ clean :
 fclean : clean
 	rm -f string
 
-re : fclean all% %
+re : fclean all

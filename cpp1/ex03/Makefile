@@ -18,4 +18,4 @@ clean :
 fclean : clean
 	rm -f battle
 
-re : fclean all% 
+re : fclean all

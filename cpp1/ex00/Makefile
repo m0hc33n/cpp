@@ -16,4 +16,4 @@ clean :
 fclean : clean
 	rm -f zombie
 
-re : fclean all% 
+re : fclean all
