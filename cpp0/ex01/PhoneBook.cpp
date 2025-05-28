@@ -25,17 +25,18 @@ void PhoneBook::handleCommand(std::string &cmd)
 	else if (cmd.compare("SEARCH") == 0) {
 		search();
 	}
-	}
+}
 
 void PhoneBook::add() 
 {
-	// rotate cursor to begining if contacts is full
-	if (cursor == 8) {
-		cursor = 0;
-	}
-	// get info
 	std::string info[5];
-	std::string prompt[] = {"\tFirstName:   ", "\tLastName:    ", "\tNickName:    ", "\tPhoneNumber: ", "\tDarkSecret:  "};
+	std::string prompt[] = {"\tFirstName:   ", 
+							"\tLastName:    ",
+							"\tNickName:    ",
+							"\tPhoneNumber: ",
+							"\tDarkSecret:  "
+						};
+
 	for (int i=0; i < 5; i++) {
 		do {
 			std::cout << prompt[i];
@@ -50,6 +51,10 @@ void PhoneBook::add()
 		} while (info[i].empty());
 	}
 
+	// rotate cursor to begining if contacts is full
+	if (cursor == 8) {
+		cursor = 0;
+	}
 	contacts[cursor].setFirstName(info[0]);
 	contacts[cursor].setLastName(info[1]);
 	contacts[cursor].setNickName(info[2]);
@@ -70,28 +75,30 @@ void PhoneBook::search() const
 	int index;
 	std::string indexStr;
 	std::stringstream ss;
-	bool fflag = false;
+	bool tflag = true;
 	do {
 		std::cout << "\tindex to display: ";
-		if (std::getline(std::cin, indexStr)) {
+		if (std::getline(std::cin, indexStr) && !indexStr.empty()) {
 			std::stringstream ss(indexStr);
 			if (ss >> index && ss.eof()) {
 				if (index >= 0 && index < n_contacts) {
 					display_contact(index);
-					fflag = false;
+					tflag = false;
 				} else {
 					std::cout << "\t\t[!!] invalid index. Try again!\n";
-					fflag = true;
 				}
 			} else {
 				std::cout << "\t\t[!!] invalid index. Try again!\n";
-				fflag = true;	
 			}
 		} else {
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			if (std::cin.eof()) {
+				return;
+			} else if (!indexStr.empty()){
+				std::cerr << "[!!] Error reading input." << std::endl;
+				return;
+			}
 		}
-	} while (fflag);
+	} while (tflag);
 }
 
 void PhoneBook::display_contacts() const 
