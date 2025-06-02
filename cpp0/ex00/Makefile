@@ -13,3 +13,5 @@ fclean : clean
 	rm -f megaphone
 
 re : fclean all
+
+.PHONY : clean

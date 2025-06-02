@@ -16,4 +16,6 @@ clean :
 fclean : clean
 	rm -f test
 
-re : fclean all
+re : 
+
+.PHONY : clean

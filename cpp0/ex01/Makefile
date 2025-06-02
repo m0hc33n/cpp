@@ -19,3 +19,5 @@ fclean : clean
 	rm -f phonebook
 
 re : fclean all
+
+.PHONY : clean
