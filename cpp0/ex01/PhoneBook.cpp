@@ -27,8 +27,19 @@ void PhoneBook::handleCommand(std::string &cmd)
 	}
 }
 
+bool PhoneBook::invalid_in(std::string &field) const
+{
+	for (size_t i=0; i < field.length(); i++)
+    {
+        if (!isprint(static_cast<unsigned char>(field[i])))
+            return true;
+    }
+    return false;
+}
+
 void PhoneBook::add() 
 {
+	bool		invalid;
 	std::string info[5];
 	std::string prompt[] = {"\tFirstName:   ", 
 							"\tLastName:    ",
@@ -39,6 +50,7 @@ void PhoneBook::add()
 
 	for (int i=0; i < 5; i++) {
 		do {
+			invalid = false;
 			std::cout << prompt[i];
 			if (!getline(std::cin, info[i])) {
 				if (std::cin.eof()) {
@@ -48,7 +60,11 @@ void PhoneBook::add()
 					return;
 				}
 			}
-		} while (info[i].empty());
+			else if (invalid_in(info[i])) {
+				invalid = true;
+				std::cerr << "\t\t[!!] invalid input. Try again!\n" << std::endl;
+			} 
+		} while (info[i].empty() || invalid);
 	}
 
 	// rotate cursor to begining if contacts is full
